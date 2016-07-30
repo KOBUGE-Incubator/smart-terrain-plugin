@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=1]
+
+[ext_resource path="res://lib/smart_texture_polygon.gd" type="Script" id=1]
+[ext_resource path="res://sample/sample.png" type="Texture" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+
+atlas = ExtResource( 2 )
+region = Rect2( 0, 32, 16, 16 )
+margin = Rect2( 0, 0, 0, 0 )
+
+[sub_resource type="AtlasTexture" id=2]
+
+atlas = ExtResource( 2 )
+region = Rect2( 0, 48, 16, 16 )
+margin = Rect2( 0, 0, 0, 0 )
+
+[sub_resource type="AtlasTexture" id=3]
+
+atlas = ExtResource( 2 )
+region = Rect2( 16, 48, 16, 16 )
+margin = Rect2( 0, 0, 0, 0 )
+
+[sub_resource type="AtlasTexture" id=4]
+
+atlas = ExtResource( 2 )
+region = Rect2( 16, 32, 16, 16 )
+margin = Rect2( 0, 0, 0, 0 )
+
+[node name="sample" type="Node2D"]
+
+[node name="polygon1" type="Polygon2D" parent="."]
+
+transform/pos = Vector2( 0.446136, -1.26648 )
+polygon = Vector2Array( 425.603, 74.6318, 670.389, 110.651, 663.773, 204.008, 494.702, 311.331, 635.839, 425.271, 793.149, 424.536, 760.805, 545.091, 493.232, 550.236, 315.339, 400.278, 208.751, 364.993, 274.174, 215.034, 382.968, 150.346 )
+uv = Vector2Array( 298, 132, 745, 135, 761, 524, 293, 493 )
+color = Color( 0.511719, 0.269118, 0.0339813, 1 )
+vertex_colors = ColorArray(  )
+offset = Vector2( 0, 0 )
+texture/texture = null
+texture/offset = Vector2( 0, 0 )
+texture/scale = Vector2( 1, 1 )
+texture/rotation = 0.0
+invert/enable = false
+invert/border = 100.0
+script/script = ExtResource( 1 )
+top_edge_texture = SubResource( 1 )
+left_edge_texture = SubResource( 2 )
+right_edge_texture = SubResource( 3 )
+bottom_edge_texture = SubResource( 4 )
+thickness = 32
+override_color = false
+
+
