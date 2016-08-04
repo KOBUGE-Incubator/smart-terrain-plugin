@@ -12,8 +12,8 @@ class SideTexture:
 	func get_length(thickness):
 		return (texture.get_size().get_aspect() * thickness * normal).length()
 	
-	func is_better(other, target_normal):
-		return other.normal.dot(target_normal) < normal.dot(target_normal)
+	func get_weight(side):
+		return normal.dot(side.normal)
 	
 	func transform_uvs(uvs):
 		uvs = Vector2Array(uvs)
@@ -30,17 +30,36 @@ class SideTexture:
 
 
 class CornerTexture:
-	var normal
-	var angle
 	var texture
+	var normal
+	var previous_side_texture
+	var next_side_texture
+	var is_source_corner
 	
-	func _init(_texture, _normal, _angle):
+	func _init(_texture, _normal, _previous_texture, _next_texture, _is_source_corner = true):
 		texture = _texture
 		normal = _normal
-		angle = _angle
+		previous_side_texture = _previous_texture
+		next_side_texture = _next_texture
+		is_source_corner = _is_source_corner
 	
-	func is_better(other, target_normal, target_angle):
-		return other.normal.dot(target_normal) < normal.dot(target_normal) # FIXME
+	func transform_uvs(uvs):
+		uvs = Vector2Array(uvs)
+		if is_source_corner:
+			for i in range(uvs.size()):
+				uvs[i] = (uvs[i] - Vector2(.5,.5)).rotated(normal.angle() - PI/4) + Vector2(.5,.5)
+		else:
+			for i in range(uvs.size()):
+				uvs[i] = (uvs[i] - Vector2(.5,.5)).rotated(normal.angle()) + Vector2(.5,.5)
+			
+		
+		if texture extends AtlasTexture:
+			var real_size = texture.get_atlas().get_size()
+			var real_region = texture.get_region()
+			var region = Rect2(real_region.pos / real_size, real_region.size / real_size)
+			for i in range(uvs.size()):
+				uvs[i] = region.pos + uvs[i] * region.size
+		return uvs
 
 
 class Side:
@@ -48,6 +67,7 @@ class Side:
 	var end = Vector2()
 	var normal = Vector2()
 	var direction = Vector2()
+	var texture
 	
 	func _init(_start, _end):
 		start = _start
@@ -72,8 +92,11 @@ class Corner:
 	var position = Vector2()
 	var after = Vector2()
 	var normal = Vector2()
+	var before_side_normal = Vector2()
+	var after_side_normal = Vector2()
 	var angle = 0
 	var is_inset = false
+	var texture
 	
 	func _init(_position, _before=Vector2(), _after=Vector2()):
 		position = _position
@@ -85,6 +108,10 @@ class Corner:
 		var pre_normal_1 = (position - before).normalized()
 		var pre_normal_2 = (position - after).normalized()
 		normal = (pre_normal_1.normalized() + pre_normal_2.normalized()).normalized()
+		
+		before_side_normal = (before - position).rotated(-PI/2).normalized()
+		after_side_normal = (position - after).rotated(-PI/2).normalized()
+		
 		is_inset = Vector3(pre_normal_1.x, pre_normal_1.y, 0).cross(Vector3(pre_normal_2.x, pre_normal_2.y, 0)).z > 0
 		
 		if is_inset:
@@ -95,11 +122,13 @@ class Corner:
 			normal = (before - after).rotated(-PI/2).normalized()
 		
 		angle = (position - before).angle_to(position - after)
-		printt(is_inset,rad2deg(angle))
+		#printt(is_inset,rad2deg(angle))
 	
 	func debug_draw(canvasitem):
 		canvasitem.draw_circle(position, 5, Color(0, 0, 1))
 		canvasitem.draw_line(position, position + normal*50, Color(0, 1, 0), 2)
+		canvasitem.draw_line(position, position + before_side_normal*25, Color(1, 1, 0), 2)
+		canvasitem.draw_line(position, position + after_side_normal*25, Color(1, 1, 0), 2)
 
 static func cut_uvs(uvs, ratio, offset = Vector2()):
 	uvs = Vector2Array(uvs)

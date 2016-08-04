@@ -1,9 +1,9 @@
-[gd_scene load_steps=8 format=1]
+[gd_scene load_steps=11 format=1]
 
 [ext_resource path="res://lib/smart_texture_polygon.gd" type="Script" id=1]
 [ext_resource path="res://sample/sample.png" type="Texture" id=2]
 
-[sub_resource type="AtlasTexture" id=6]
+[sub_resource type="AtlasTexture" id=1]
 
 atlas = ExtResource( 2 )
 region = Rect2( 0, 32, 16, 16 )
@@ -33,12 +33,30 @@ atlas = ExtResource( 2 )
 region = Rect2( 0, 0, 16, 16 )
 margin = Rect2( 0, 0, 0, 0 )
 
+[sub_resource type="AtlasTexture" id=6]
+
+atlas = ExtResource( 2 )
+region = Rect2( 16, 0, 16, 16 )
+margin = Rect2( 0, 0, 0, 0 )
+
+[sub_resource type="AtlasTexture" id=7]
+
+atlas = ExtResource( 2 )
+region = Rect2( 16, 16, 16, 16 )
+margin = Rect2( 0, 0, 0, 0 )
+
+[sub_resource type="AtlasTexture" id=8]
+
+atlas = ExtResource( 2 )
+region = Rect2( 0, 16, 16, 16 )
+margin = Rect2( 0, 0, 0, 0 )
+
 [node name="sample" type="Node2D"]
 
 [node name="polygon1" type="Polygon2D" parent="."]
 
 transform/pos = Vector2( 0.446136, -1.26648 )
-polygon = Vector2Array( 534.818, 100.457, 1012.41, 392.659, 696.879, 548.581, 493.074, 509.294, 699.334, 461.412, 533.59, 346.005, 302.775, 348.46, 202.101, 478.6, 41.267, 279.707, 265.943, 191.31, 286.815, 203.587 )
+polygon = Vector2Array( 430.46, 68.5361, 689.512, 78.358, 720.206, 252.697, 591.293, 537.532, 307.686, 514.205, 439.054, 298.123, 160.357, 241.647 )
 uv = Vector2Array( 298, 132, 745, 135, 761, 524, 293, 493 )
 color = Color( 0.511719, 0.269118, 0.0339813, 1 )
 vertex_colors = ColorArray(  )
@@ -50,13 +68,18 @@ texture/rotation = 0.0
 invert/enable = false
 invert/border = 100.0
 script/script = ExtResource( 1 )
-top_edge_texture = SubResource( 6 )
+top_edge_texture = SubResource( 1 )
 left_edge_texture = SubResource( 2 )
 right_edge_texture = SubResource( 3 )
 bottom_edge_texture = SubResource( 4 )
 top_left_corner_texture = SubResource( 5 )
+top_right_corner_texture = SubResource( 6 )
+bottom_right_corner_texture = SubResource( 7 )
+bottom_left_corner_texture = SubResource( 8 )
 thickness = 64.0
 override_color = false
 side_texture_mode = 1
+corner_texture_mode = 1
+debug = false
 
 
